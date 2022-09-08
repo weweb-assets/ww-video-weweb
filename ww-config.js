@@ -4,8 +4,8 @@ export default {
     },
     editor: {
         label: {
-            fr: 'Vidéo - Youtube',
-            en: 'Vidéo - Youtube',
+            fr: 'Vidéo - WeWeb',
+            en: 'Vidéo - WeWeb',
         },
         icon: 'play',
     },
@@ -15,16 +15,19 @@ export default {
         { name: 'end', label: { en: 'On end' }, event: { value: '' } },
     ],
     properties: {
-        url: {
-            path: 'url',
-            label: { en: 'Video url', fr: 'Url de la vidéo' },
-            type: 'Text',
+        file: {
+            label: { en: 'File', fr: 'Fichier' },
+            type: 'Video',
             section: 'settings',
-            options: {
-                placeholder: 'Url',
-            },
             bindable: true,
-            defaultValue: 'https://www.youtube.com/watch?v=r8z4Omw-D2s',
+            defaultValue: '',
+        },
+        previewImage: {
+            label: { en: 'Preview image', fr: "Image de d'aperçu" },
+            type: 'Image',
+            section: 'settings',
+            bindable: true,
+            defaultValue: '',
         },
         videoStartTime: {
             label: {
@@ -120,6 +123,28 @@ export default {
                     },
                     {
                         default: true,
+                        value: true,
+                        title: { en: 'Center', fr: 'Milieu' },
+                        icon: 'tick',
+                    },
+                ],
+            },
+            defaultValue: true,
+        },
+        preload: {
+            label: { en: 'Preload', fr: 'Précharger' },
+            type: 'TextRadioGroup',
+            section: 'settings',
+            bindable: true,
+            options: {
+                choices: [
+                    {
+                        default: true,
+                        value: false,
+                        title: { en: 'Start', fr: 'Début' },
+                        icon: 'none',
+                    },
+                    {
                         value: true,
                         title: { en: 'Center', fr: 'Milieu' },
                         icon: 'tick',

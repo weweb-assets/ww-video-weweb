@@ -1,7 +1,7 @@
 {
-    "name": "ww-video-youtube",
+    "name": "ww-video-weweb",
     "repository": {
-        "url": "https://github.com/weweb-assets/ww-video-youtube"
+        "url": "https://github.com/weweb-assets/ww-video-weweb"
     },
     "version": "3.1.0",
     "scripts": {
@@ -12,8 +12,5 @@
         "@vue/eslint-config-prettier": "^6.0.0",
         "@weweb/cli": "latest"
     },
-    "license": "MIT",
-    "dependencies": {
-        "youtube-player": "^5.5.2"
-    }
+    "license": "MIT"
 }

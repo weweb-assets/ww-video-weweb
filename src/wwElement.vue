@@ -1,12 +1,12 @@
 <template>
-    <div class="ww-video-youtube" :class="{ editing: isEditing }">
-        <div ref="videoPlayer"></div>
+    <div class="ww-video-weweb" :class="{ editing: isEditing }">
+        <video ref="videoPlayer" class="video-element" playsinline webkit-playsinline v-bind="videoAttributes">
+            Sorry, your browser doesn't support embedded videos.
+        </video>
     </div>
 </template>
 
 <script>
-import YouTubePlayer from 'youtube-player';
-
 export default {
     props: {
         content: { type: Object, required: true },
@@ -37,11 +37,6 @@ export default {
 
         return { player, isPlayedVariableValue, setIsPlayedValue, currentTimeVariableValue, setCurrentTimeValue };
     },
-    data() {
-        return {
-            timeUpdater: null,
-        };
-    },
     computed: {
         isEditing() {
             /* wwEditor:start */
@@ -50,115 +45,92 @@ export default {
             // eslint-disable-next-line no-unreachable
             return false;
         },
-        videoId() {
-            if (!this.content.url || typeof this.content.url !== 'string') return '';
+        isPreviewImageWeWeb() {
+            return this.content.previewImage && this.content.previewImage.startsWith('designs/');
+        },
+        previewImageSrc() {
+            return this.isPreviewImageWeWeb
+                ? `${wwLib.wwUtils.getCdnPrefix()}${this.content.previewImage}`
+                : this.content.previewImage;
+        },
+        videoAttributes() {
+            const attributes = {
+                src: this.content.file,
+                poster: this.previewImageSrc,
+                muted: true,
+            };
 
-            if (this.content.url.indexOf('youtube.com') !== -1) {
-                return this.content.url.split('v=')[1].split('?')[0];
-            } else if (this.content.url.indexOf('youtu.be') !== -1) {
-                return this.content.url.split('be/')[1].split('?')[0];
-            }
+            if (this.content.autoplay) attributes.autoplay = this.isEditing ? false : true;
+            if (this.content.muted) attributes.muted = true;
+            if (this.content.controls) attributes.controls = true;
+            if (this.content.loop) attributes.loop = true;
+            if (this.content.preload) attributes.preload = true;
 
-            return '';
+            return attributes;
         },
     },
     watch: {
         isEditing() {
-            this.initPlayer();
+            this.initVideo();
         },
-        'content.url'() {
-            this.initPlayer();
-        },
-        'content.controls'() {
-            this.initPlayer();
-        },
-        'content.loop'(value) {
-            if (this.player) this.player.setLoop(value);
-        },
-        'content.muted'(value) {
-            if (this.player) {
-                if (value) {
-                    this.player.mute();
-                } else {
-                    this.player.unMute();
-                }
-            }
+        'content.file'() {
+            this.initVideo();
         },
     },
     methods: {
-        async initPlayer() {
-            if (!this.videoId) return;
-            if (this.player) await this.player.destroy();
+        initVideo() {
+            const video = this.$refs.videoPlayer;
+            if (!video) return;
 
-            const el = this.$refs.videoPlayer;
-            this.player = await YouTubePlayer(el);
-            const settings = { videoId: this.videoId, startSeconds: this.content.videoStartTime };
+            video.pause();
+            video.currentTime = Math.ceil(this.content.videoStartTime);
 
-            this.player.on('ready', async () => {
-                if (!this.content.autoplay) this.player.cueVideoById(settings);
-                if (this.content.muted) this.player.mute();
-                if (this.content.loop) this.player.setLoop(true);
+            if (this.isEditing) return;
 
-                /* wwEditor:start */
-                // Get the video duration to adapt the option of videoStartTime
-                const videoDuration = await this.player.getDuration();
-                if (this.isEditing)
-                    this.$emit('update:sidepanel-content', {
-                        path: 'videoDuration',
-                        value: videoDuration,
-                    });
-                /* wwEditor:end */
-
-                if (this.isEditing) return;
-                this.player.loadVideoById(settings);
-                this.timeUpdater = setInterval(await this.updateCurrentTime, 250);
-
-                this.player.on('stateChange', event => {
-                    switch (event.data) {
-                        // https://developers.google.com/youtube/iframe_api_reference#Events
-                        case 1:
-                            this.setIsPlayedValue(true);
-                            this.$emit('trigger-event', { name: 'play', event: { value: data.seconds } });
-                            break;
-                        case 2:
-                            this.setIsPlayedValue(false);
-                            this.$emit('trigger-event', { name: 'pause', event: { value: data.seconds } });
-                            break;
-                        case 0:
-                            this.setIsPlayedValue(false);
-                            this.$emit('trigger-event', { name: 'end', event: {} });
-                            break;
-                        default:
-                            break;
-                    }
+            /* wwEditor:start */
+            if (typeof video.duration == 'number') {
+                this.$emit('update:sidepanel-content', {
+                    path: 'videoDuration',
+                    value: Math.ceil(video.duration),
                 });
-            });
+            }
+            /* wwEditor:end */
+
+            video.ontimeupdate = event => {
+                this.updateCurrentTime(event.target.currentTime);
+            };
+            video.onplay = () => this.updateIsPlayed(true);
+            video.onpause = () => this.updateIsPlayed(false);
+            video.onended = () => this.$emit('trigger-event', { name: 'end', event: {} });
+
+            if (this.content.autoplay) video.play();
         },
-        async updateCurrentTime() {
-            const currentTime = await this.player.getCurrentTime();
-            this.setCurrentTimeValue(Math.ceil(currentTime * 10) / 10);
+        updateCurrentTime(currentTime) {
+            if (typeof currentTime !== 'number') return;
+            this.setCurrentTimeValue(currentTime.toFixed(2));
         },
-    },
-    beforeUnmount() {
-        clearInterval(this.timeUpdater);
-    },
-    async mounted() {
-        await this.initPlayer();
+        updateIsPlayed(isPlayed) {
+            this.setIsPlayedValue(isPlayed);
+            if (isPlayed) {
+                this.$emit('trigger-event', { name: 'play', event: {} });
+            } else {
+                this.$emit('trigger-event', { name: 'pause', event: {} });
+            }
+        },
     },
 };
 </script>
 
 <style lang="scss">
-.ww-video-youtube {
+.ww-video-weweb {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 16 / 9;
 
     &.editing {
         pointer-events: none;
     }
 
-    iframe {
+    .video-element {
         position: absolute;
         top: 0;
         left: 0;
