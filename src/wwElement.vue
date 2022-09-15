@@ -18,10 +18,10 @@ export default {
     emits: ['update:sidepanel-content', 'trigger-event'],
     setup(props) {
         const player = null;
-        const { variableValue: isPlayedVariableValue, setValue: setIsPlayedValue } =
+        const { variableValue: isPlayingVariableValue, setValue: setIsPlayingValue } =
             wwLib.wwVariable.useComponentVariable({
                 uid: props.uid,
-                name: 'Is Played',
+                name: 'Is Playing',
                 type: 'boolean',
                 defaultValue: false,
                 readonly: true,
@@ -35,7 +35,7 @@ export default {
                 readonly: true,
             });
 
-        return { player, isPlayedVariableValue, setIsPlayedValue, currentTimeVariableValue, setCurrentTimeValue };
+        return { player, isPlayingVariableValue, setIsPlayingValue, currentTimeVariableValue, setCurrentTimeValue };
     },
     computed: {
         isEditing() {
@@ -99,8 +99,8 @@ export default {
             video.ontimeupdate = event => {
                 this.updateCurrentTime(event.target.currentTime);
             };
-            video.onplay = () => this.updateIsPlayed(true);
-            video.onpause = () => this.updateIsPlayed(false);
+            video.onplay = () => this.updateIsPlaying(true);
+            video.onpause = () => this.updateIsPlaying(false);
             video.onended = () => this.$emit('trigger-event', { name: 'end', event: {} });
 
             if (this.content.autoplay) video.play();
@@ -109,9 +109,9 @@ export default {
             if (typeof currentTime !== 'number') return;
             this.setCurrentTimeValue(currentTime.toFixed(2));
         },
-        updateIsPlayed(isPlayed) {
-            this.setIsPlayedValue(isPlayed);
-            if (isPlayed) {
+        updateIsPlaying(isPlaying) {
+            this.setIsPlayingValue(isPlaying);
+            if (isPlaying) {
                 this.$emit('trigger-event', { name: 'play', event: {} });
             } else {
                 this.$emit('trigger-event', { name: 'pause', event: {} });
