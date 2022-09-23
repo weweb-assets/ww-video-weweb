@@ -4,23 +4,48 @@ export default {
     },
     editor: {
         label: {
-            fr: 'Vidéo - Vimeo',
-            en: 'Vidéo - Vimeo',
+            fr: 'Vidéo - WeWeb',
+            en: 'Vidéo - WeWeb',
         },
         icon: 'play',
     },
+    triggerEvents: [
+        { name: 'play', label: { en: 'On play' }, event: { value: '' }, default: true },
+        { name: 'pause', label: { en: 'On pause' }, event: { value: '' } },
+        { name: 'end', label: { en: 'On end' }, event: { value: '' } },
+    ],
     properties: {
-        url: {
-            path: 'url',
-            label: { en: 'Video url', fr: 'Url de la vidéo' },
-            type: 'Text',
+        file: {
+            label: { en: 'File', fr: 'Fichier' },
+            type: 'Video',
             section: 'settings',
-            options: {
-                placeholder: 'Url',
-            },
             bindable: true,
-            hidden: content => content.provider === 'weweb',
-            defaultValue: 'https://youtu.be/76CMCIW-wGk',
+            defaultValue: '',
+        },
+        previewImage: {
+            label: { en: 'Preview image', fr: "Image de d'aperçu" },
+            type: 'Image',
+            section: 'settings',
+            bindable: true,
+            defaultValue: '',
+        },
+        videoStartTime: {
+            label: {
+                en: 'Start time (s)',
+            },
+            type: 'Number',
+            options: (_, sidepanelContent) => {
+                console.log(sidepanelContent.videoDuration);
+                return { min: 0, max: sidepanelContent.videoDuration };
+            },
+            section: 'settings',
+            bindable: true,
+            defaultValue: 0,
+        },
+        videoDuration: {
+            editorOnly: true,
+            defaultValue: 0,
+            hidden: true,
         },
         autoplay: {
             label: { en: 'Autoplay', fr: 'Lecture automatique' },
@@ -98,6 +123,28 @@ export default {
                     },
                     {
                         default: true,
+                        value: true,
+                        title: { en: 'Center', fr: 'Milieu' },
+                        icon: 'tick',
+                    },
+                ],
+            },
+            defaultValue: true,
+        },
+        preload: {
+            label: { en: 'Preload', fr: 'Précharger' },
+            type: 'TextRadioGroup',
+            section: 'settings',
+            bindable: true,
+            options: {
+                choices: [
+                    {
+                        default: true,
+                        value: false,
+                        title: { en: 'Start', fr: 'Début' },
+                        icon: 'none',
+                    },
+                    {
                         value: true,
                         title: { en: 'Center', fr: 'Milieu' },
                         icon: 'tick',
