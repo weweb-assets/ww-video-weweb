@@ -57,7 +57,7 @@ export default {
             const attributes = {
                 src: this.content.file,
                 poster: this.previewImageSrc,
-                muted: true,
+                muted: this.content.muted,
             };
 
             if (this.content.autoplay) attributes.autoplay = this.isEditing ? false : true;
@@ -76,34 +76,39 @@ export default {
         'content.file'() {
             this.initVideo();
         },
+        'content.autoplay'(value) {
+            if (!this.content.muted) this.$emit('update:content', { muted: true });
+            if (this.player && value && !this.isEditing) this.player.play();
+        },
     },
     methods: {
         initVideo() {
-            const video = this.$refs.videoPlayer;
-            if (!video) return;
+            this.player = this.$refs.videoPlayer;
+            if (!this.player) return;
 
-            video.pause();
-            video.currentTime = Math.ceil(this.content.videoStartTime);
+            this.player.pause();
+            this.player.currentTime = Math.ceil(this.content.videoStartTime);
 
             if (this.isEditing) return;
 
             /* wwEditor:start */
-            if (typeof video.duration == 'number') {
+            if (typeof this.player.duration == 'number') {
                 this.$emit('update:sidepanel-content', {
                     path: 'videoDuration',
-                    value: Math.ceil(video.duration),
+                    value: Math.ceil(this.player.duration),
                 });
             }
             /* wwEditor:end */
 
-            video.ontimeupdate = event => {
+            this.player.ontimeupdate = event => {
                 this.updateCurrentTime(event.target.currentTime);
             };
-            video.onplay = () => this.updateIsPlaying(true);
-            video.onpause = () => this.updateIsPlaying(false);
-            video.onended = () => this.$emit('trigger-event', { name: 'end', event: {} });
+            this.player.onplay = () => this.updateIsPlaying(true);
+            this.player.onpause = () => this.updateIsPlaying(false);
+            this.player.onended = () =>
+                this.$emit('trigger-event', { name: 'end', event: { value: this.player.currentTime } });
 
-            if (this.content.autoplay) video.play();
+            if (this.content.autoplay) this.player.play();
         },
         updateCurrentTime(currentTime) {
             if (typeof currentTime !== 'number') return;
@@ -112,9 +117,9 @@ export default {
         updateIsPlaying(isPlaying) {
             this.setIsPlayingValue(isPlaying);
             if (isPlaying) {
-                this.$emit('trigger-event', { name: 'play', event: {} });
+                this.$emit('trigger-event', { name: 'play', event: { value: this.player.currentTime } });
             } else {
-                this.$emit('trigger-event', { name: 'pause', event: {} });
+                this.$emit('trigger-event', { name: 'pause', event: { value: this.player.currentTime } });
             }
         },
     },
