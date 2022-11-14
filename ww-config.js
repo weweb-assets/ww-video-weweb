@@ -21,6 +21,12 @@ export default {
             section: 'settings',
             bindable: true,
             defaultValue: '',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'string',
+                tooltip: 'A weweb local video url`',
+            },
+            /* wwEditor:end */
         },
         previewImage: {
             label: { en: 'Preview image', fr: "Image de d'aperçu" },
@@ -28,6 +34,12 @@ export default {
             section: 'settings',
             bindable: true,
             defaultValue: '',
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'string',
+                tooltip: 'A string that defines an image url`',
+            },
+            /* wwEditor:end */
         },
         videoStartTime: {
             label: {
@@ -41,6 +53,12 @@ export default {
             section: 'settings',
             bindable: true,
             defaultValue: 0,
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'number',
+                tooltip: 'A number that defines the video start time, in seconds: `42`',
+            },
+            /* wwEditor:end */
         },
         videoDuration: {
             editorOnly: true,
@@ -49,108 +67,40 @@ export default {
         },
         autoplay: {
             label: { en: 'Autoplay', fr: 'Lecture automatique' },
-            type: 'TextRadioGroup',
+            type: 'OnOff',
             section: 'settings',
-            options: {
-                choices: [
-                    {
-                        default: true,
-                        value: false,
-                        title: { en: 'Start', fr: 'Début' },
-                        icon: 'none',
-                    },
-                    {
-                        value: true,
-                        title: { en: 'Center', fr: 'Milieu' },
-                        icon: 'tick',
-                    },
-                ],
-            },
             defaultValue: false,
+            bindable: true,
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'boolean',
+                tooltip: 'A boolean that defines if the video should start automatically: `true | false`',
+            },
+            /* wwEditor:end */
         },
         muted: {
             label: { en: 'Muted', fr: 'Muet' },
-            type: 'TextRadioGroup',
+            type: 'OnOff',
             section: 'settings',
-            options: {
-                choices: [
-                    {
-                        default: true,
-                        value: false,
-                        title: { en: 'Start', fr: 'Début' },
-                        icon: 'none',
-                    },
-                    {
-                        value: true,
-                        title: { en: 'Center', fr: 'Milieu' },
-                        icon: 'tick',
-                    },
-                ],
-            },
             defaultValue: false,
         },
         loop: {
             label: { en: 'Loop', fr: 'Lecture en boucle' },
-            type: 'TextRadioGroup',
+            type: 'OnOff',
             section: 'settings',
-            options: {
-                choices: [
-                    {
-                        default: true,
-                        value: false,
-                        title: { en: 'Start', fr: 'Début' },
-                        icon: 'none',
-                    },
-                    {
-                        value: true,
-                        title: { en: 'Center', fr: 'Milieu' },
-                        icon: 'tick',
-                    },
-                ],
-            },
             defaultValue: false,
         },
         controls: {
             label: { en: 'Controls', fr: 'Contrôles' },
-            type: 'TextRadioGroup',
+            type: 'OnOff',
             section: 'settings',
-            options: {
-                choices: [
-                    {
-                        value: false,
-                        title: { en: 'Start', fr: 'Début' },
-                        icon: 'none',
-                    },
-                    {
-                        default: true,
-                        value: true,
-                        title: { en: 'Center', fr: 'Milieu' },
-                        icon: 'tick',
-                    },
-                ],
-            },
             defaultValue: true,
         },
         preload: {
             label: { en: 'Preload', fr: 'Précharger' },
-            type: 'TextRadioGroup',
+            type: 'OnOff',
             section: 'settings',
             bindable: true,
-            options: {
-                choices: [
-                    {
-                        default: true,
-                        value: false,
-                        title: { en: 'Start', fr: 'Début' },
-                        icon: 'none',
-                    },
-                    {
-                        value: true,
-                        title: { en: 'Center', fr: 'Milieu' },
-                        icon: 'tick',
-                    },
-                ],
-            },
             defaultValue: true,
         },
     },
