@@ -122,6 +122,18 @@ export default {
                 this.$emit('trigger-event', { name: 'pause', event: { value: this.player.currentTime } });
             }
         },
+        playVideo() {
+            if (!this.player) return;
+            this.player.play();
+        },
+        pauseVideo() {
+            if (!this.player) return;
+            this.player.pause();
+        },
+        seekTo(time) {
+            if (!this.player) return;
+            this.player.currentTime = Math.ceil(time);
+        },
     },
 };
 </script>
