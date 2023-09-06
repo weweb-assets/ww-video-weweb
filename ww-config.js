@@ -4,8 +4,8 @@ export default {
     },
     editor: {
         label: {
-            fr: 'Vidéo - WeWeb',
-            en: 'Vidéo - WeWeb',
+            fr: 'Video - WeWeb',
+            en: 'Video - WeWeb',
         },
         icon: 'play',
     },
