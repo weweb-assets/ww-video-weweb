@@ -54,19 +54,15 @@ export default {
                 : this.content.previewImage;
         },
         videoAttributes() {
-            const attributes = {
+            return {
                 src: this.content.file,
                 poster: this.previewImageSrc,
                 muted: this.content.muted,
+                autoplay: this.isEditing ? false : this.content.autoplay,
+                controls: this.content.controls,
+                loop: this.content.loop,
+                preload: this.content.preload,
             };
-
-            if (this.content.autoplay) attributes.autoplay = this.isEditing ? false : true;
-            if (this.content.muted) attributes.muted = true;
-            if (this.content.controls) attributes.controls = true;
-            if (this.content.loop) attributes.loop = true;
-            if (this.content.preload) attributes.preload = true;
-
-            return attributes;
         },
     },
     watch: {
@@ -113,7 +109,9 @@ export default {
             this.player.onended = () =>
                 this.$emit('trigger-event', { name: 'end', event: { value: this.player.currentTime } });
 
-            if (this.content.autoplay) this.player.play();
+            this.$nextTick(() => {
+                if (this.content.autoplay) this.player.play();
+            });
         },
         updateCurrentTime(currentTime) {
             if (typeof currentTime !== 'number') return;
