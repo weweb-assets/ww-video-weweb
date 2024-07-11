@@ -77,11 +77,9 @@ export default {
             if (this.player && value && !this.isEditing) this.player.play();
         },
     },
-    /* wwFront:start */
     mounted() {
         this.initVideo();
     },
-    /* wwFront:end */
     methods: {
         initVideo() {
             this.player = this.$refs.videoPlayer;
