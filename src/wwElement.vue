@@ -144,8 +144,10 @@ export default {
     position: relative;
     overflow: hidden;
 
-    &.editing {
-        pointer-events: none;
+    &.editing::after {
+        position: absolute;
+        content: '';
+        inset: 0;
     }
 
     .video-element {
