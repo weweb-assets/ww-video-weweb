@@ -125,6 +125,7 @@ export default {
         },
         playVideo() {
             if (!this.player) return;
+            throw new Error('BA NON. PAS DE PLAY');
             this.player.play();
         },
         pauseVideo() {
