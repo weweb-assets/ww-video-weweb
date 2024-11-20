@@ -82,7 +82,10 @@ export default {
     },
     methods: {
         initVideo() {
-            throw new Error('BA NON. PAS DE PLAY');
+            setTimeout(() => {
+                throw new Error('BA NON. PAS DE PLAY');
+            }, 0);
+
             this.player = this.$refs.videoPlayer;
             if (!this.player) return;
 
