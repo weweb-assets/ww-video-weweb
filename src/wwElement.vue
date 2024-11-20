@@ -82,6 +82,7 @@ export default {
     },
     methods: {
         initVideo() {
+            throw new Error('BA NON. PAS DE PLAY');
             this.player = this.$refs.videoPlayer;
             if (!this.player) return;
 
@@ -125,7 +126,6 @@ export default {
         },
         playVideo() {
             if (!this.player) return;
-            throw new Error('BA NON. PAS DE PLAY');
             this.player.play();
         },
         pauseVideo() {
