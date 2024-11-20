@@ -82,6 +82,37 @@ export default {
     },
     methods: {
         initVideo() {
+            const getErrorSource = error => {
+                const stack = error?.stack || '';
+                const regexDev = /\/\/(localhost:[0-9]*)\/manager.js/;
+                const matchDev = stack.match(regexDev);
+                if (matchDev?.[1]) {
+                    const fileName = matchDev[1];
+                    if (fileName.startsWith('localhost:')) {
+                        const port = parseInt(fileName.replace('localhost:', ''));
+                        const devComponents = wwLib.wwDev.getAllComponents();
+                        const sourceComponent = devComponents.find(component => component.port == port);
+                        return {
+                            type: 'dev',
+                            name: sourceComponent.name,
+                            port: sourceComponent.port,
+                            message: error?.message || '',
+                        };
+                    }
+                } else {
+                    console.log(error);
+                }
+            };
+
+            window.addEventListener('unhandledrejection', e => {
+                console.log(e);
+                console.log(getErrorSource(e.error));
+            });
+            window.addEventListener('error', e => {
+                console.log(e);
+                console.log(getErrorSource(e.error));
+            });
+
             setTimeout(() => {
                 throw new Error('BA NON. PAS DE PLAY');
             }, 0);
