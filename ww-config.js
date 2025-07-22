@@ -34,7 +34,6 @@ export default {
             type: 'Video',
             section: 'settings',
             bindable: true,
-            states: true,
             defaultValue: '',
             /* wwEditor:start */
             bindingValidation: {
@@ -48,7 +47,6 @@ export default {
             type: 'Image',
             section: 'settings',
             bindable: true,
-            states: true,
             defaultValue: '',
             /* wwEditor:start */
             bindingValidation: {
