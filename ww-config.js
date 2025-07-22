@@ -34,7 +34,6 @@ export default {
             type: 'Video',
             section: 'settings',
             bindable: true,
-            responsive: true,
             states: true,
             defaultValue: '',
             /* wwEditor:start */
@@ -49,7 +48,6 @@ export default {
             type: 'Image',
             section: 'settings',
             bindable: true,
-            responsive: true,
             states: true,
             defaultValue: '',
             /* wwEditor:start */
@@ -70,7 +68,6 @@ export default {
             },
             section: 'settings',
             bindable: true,
-            responsive: true,
             states: true,
             defaultValue: 0,
             /* wwEditor:start */
@@ -90,7 +87,6 @@ export default {
             type: 'OnOff',
             section: 'settings',
             bindable: true,
-            responsive: true,
             states: true,
             defaultValue: false,
             /* wwEditor:start */
@@ -104,7 +100,6 @@ export default {
             label: { en: 'Muted', fr: 'Muet' },
             type: 'OnOff',
             section: 'settings',
-            responsive: true,
             states: true,
             defaultValue: false,
         },
@@ -112,7 +107,6 @@ export default {
             label: { en: 'Loop', fr: 'Lecture en boucle' },
             type: 'OnOff',
             section: 'settings',
-            responsive: true,
             states: true,
             defaultValue: false,
         },
@@ -120,7 +114,6 @@ export default {
             label: { en: 'Controls', fr: 'Contrôles' },
             type: 'OnOff',
             section: 'settings',
-            responsive: true,
             states: true,
             defaultValue: true,
         },
@@ -129,7 +122,6 @@ export default {
             type: 'OnOff',
             section: 'settings',
             bindable: true,
-            responsive: true,
             states: true,
             defaultValue: true,
         },
