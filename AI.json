@@ -51,7 +51,7 @@
         },
         {
             "name": "controls",
-            "description": "Whether native browser video controls are displayed.",
+            "description": "Whether native browser video controls are displayed. Can differ between the default and hover states.",
             "type": "boolean",
             "defaultValue": true
         },

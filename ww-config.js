@@ -108,6 +108,7 @@ export default {
             label: { en: 'Controls', fr: 'Contrôles' },
             type: 'OnOff',
             section: 'settings',
+            states: true,
             defaultValue: true,
         },
         preload: {
